@@ -36,7 +36,7 @@ void draw(){
           fill(0,255,0);
           ellipse(t,moist2,3,3);
           
-    
+          
           println(inString);
           println(t + ", " + moist1 + ", " + moist2);   
           t += 2;
