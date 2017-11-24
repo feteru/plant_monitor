@@ -1,3 +1,12 @@
+const int numReadings = 2;
+int moist1_readings[numReadings];
+int moist2_readings[numReadings];
+int readIndex = 0;
+int total1 = 0;
+int total2 = 0;
+int average1 = 0;
+int average2 = 0;
+
 void setup() {
   Serial.begin(9600);
   int moistPins[] = {A0, A1};
@@ -8,27 +17,53 @@ void setup() {
     pinMode(moistPins[i], INPUT);
     pinMode(outPins[i], OUTPUT);
   }
+  for(int thisReading = 0; thisReading <numReadings; thisReading++){
+    moist1_readings[thisReading] = 0;
+    moist2_readings[thisReading] = 0;
+  }
 }
 
 int moist_val[2];
 int temp_val[2];
 
+
 void loop() {
-  digitalWrite(7,HIGH);
-  digitalWrite(8, HIGH);
-  moist_val[0] = analogRead(A0);
-  moist_val[1] = analogRead(A1);
+  
+  //while(readIndex <= numReadings){
+  for(readIndex = 0; readIndex <= numReadings;readIndex++){
+    digitalWrite(7,HIGH);   //write supply voltage high for moisture sensors 
+    digitalWrite(8, HIGH); 
+    moist_val[0] = analogRead(A0);  //read value from moisture sensors.
+    moist_val[1] = analogRead(A1);
+    digitalWrite(7,LOW);  //write vcc low for the moisture sensors to avoid corrosion.
+    digitalWrite(8,LOW);  
+  
+    total1 = total1 - moist1_readings[readIndex]; //total - the last read value. .
+    total2 = total2 - moist2_readings[readIndex]; //total for second sensor
+    moist1_readings[readIndex] = moist_val[0];    //I might be able to just use moist_val to assign directly
+    moist2_readings[readIndex] = moist_val[1];
+    total1 = total1 + moist1_readings[readIndex]; 
+    total2 = total2 + moist2_readings[readIndex];
+    readIndex = readIndex + 1;
+    delay(50);
+  }
+  
+  average1 = total1 / numReadings;
+  average2 = total2 / numReadings;
+  //readIndex = 0;
+  
   temp_val[0] = analogRead(A2);
   temp_val[1] = analogRead(A3);
-  Serial.print(moist_val[0]);
+
+  
+  Serial.print(average1);
   Serial.print(", ");
-  Serial.print(moist_val[1]);
+  Serial.print(average2);
   Serial.print(", ");
   Serial.print(temp_val[0]);
   Serial.print(", ");
   Serial.println(temp_val[1]);
-  digitalWrite(7,LOW);
-  digitalWrite(8,LOW);
-  delay(500);  
+
+  delay(100);  
 
 }

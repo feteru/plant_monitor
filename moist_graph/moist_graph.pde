@@ -43,7 +43,7 @@ void draw(){
           //ellipse(t,moist1,3,3);
           int []colors = {255, 0,0,255,0,0};
           for( int i = 0; i <4; i++){
-            fill(colors[i], colors[i+1], colors[i+2]);
+            stroke(colors[i], colors[i+1], colors[i+2]);
             line(t-2,  oldpoint[i], t, newpoint[i]);
           
           }
