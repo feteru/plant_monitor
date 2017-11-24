@@ -30,8 +30,8 @@ void draw(){
         if(ser_val.length ==4){
           println(ser_val[0] + " " + ser_val[1]+ " " + ser_val[2]+ " " + ser_val[3]);
           // int moist1 = int(moist_val[0]);
-          int moist1 = int(int(ser_val[0]) - 512);//int(height - (float)int(moist_val[0])*((float)height/1024));
-          int moist2 = int(ser_val[1]) - 512;//int(height - (float)int(moist_val[1])*((float)height/1024));
+          int moist1 = int(height - (float)int(ser_val[0])*((float)height/1024));//int(height - (float)int(moist_val[0])*((float)height/1024));
+          int moist2 = int(height - (float)int(ser_val[1])*((float)height/1024)); //int(height - (float)int(moist_val[1])*((float)height/1024));
           int temp1 = int(height - (float)int(ser_val[2])*((float)height/1024));
           int temp2 = int(height - (float)int(ser_val[3])*((float)height/1024));
           newpoint[0] = moist1;
