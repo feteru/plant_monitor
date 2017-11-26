@@ -48,8 +48,21 @@ void draw(){
           rect(0,0,120,50);
           fill(255,0,0);
           stroke(120);
-          text(moist1 + " %",19,30);
-          text(moist2 + " %",19,40);
+          moist1 = int(ser_val[0])*100 / 886;
+          if(moist1 < 60){
+            textSize(30);
+            text("MOISTURE LOW",2,00,40);
+            textSize(15);
+          }
+          else{
+            fill(255);
+            noStroke();
+            rect(0,0,500,50);
+            fill(255,0,0);
+          }
+          
+          text(moist1  + "%",19,30);
+          text(ser_val[0] + "%",19,40);
           float avgTemp = temp1 + temp2 /2;
           text(avgTemp,50,30);
           
