@@ -1,4 +1,5 @@
 import processing.serial.*;
+import processing.io.*;
 
 Serial Port1;
 PrintWriter output;
@@ -6,11 +7,14 @@ PrintWriter output;
 void setup(){
   size(1024,512);
   printArray(Serial.list());
-  Port1 = new Serial(this, Serial.list()[3],9600);
+  Port1 = new Serial(this, Serial.list()[0],9600);
   Port1.clear();
   fill(255,0,0);
   //noStroke();
   background(255);
+  textSize(15);
+  
+
 }
 
 int t=0;
@@ -38,6 +42,16 @@ void draw(){
           newpoint[1] = moist2;
           newpoint[2] = temp1;
           newpoint[3] = temp2;
+          //moist1 = moist1 / 2;
+          fill(255);
+          noStroke();
+          rect(0,0,120,50);
+          fill(255,0,0);
+          stroke(120);
+          text(moist1 + " %",19,30);
+          text(moist2 + " %",19,40);
+          float avgTemp = temp1 + temp2 /2;
+          text(avgTemp,50,30);
           
           //fill(0,0,255);
           //ellipse(t,moist1,3,3);
