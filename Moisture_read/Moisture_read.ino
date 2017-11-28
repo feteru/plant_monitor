@@ -73,6 +73,6 @@ void loop() {
   Serial.print(", ");
   Serial.println(temp_val[1]);
 
-  delay(50);  
+  delay(200);  
 
 }

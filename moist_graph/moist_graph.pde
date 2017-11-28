@@ -6,6 +6,7 @@ PrintWriter output;
 
 void setup(){
   size(1024,512);
+  //fullScreen();
   printArray(Serial.list());
   Port1 = new Serial(this, Serial.list()[0],9600);
   Port1.clear();
@@ -22,7 +23,8 @@ void setup(){
 
 int t=0;
 int [] oldpoint = new int[4];  //create array to hold old y values of moisture & temp
-int [] newpoint = new int[4]; //array to hold new values
+int [] newpoint = new int[4]; //array to hold new value
+float temperature;
 
 void draw(){
   if(Port1.available() > 0){
@@ -35,7 +37,7 @@ void draw(){
         inString = trim(inString);
         String[] ser_val = splitTokens(inString, ", ");  //extract the moisture values     
         if(ser_val.length ==4){
-          println(ser_val[0] + " " + ser_val[1]+ " " + ser_val[2]+ " " + ser_val[3]);
+          //println(ser_val[0] + " " + ser_val[1]+ " " + ser_val[2]+ " " + ser_val[3]);
           // int moist1 = int(moist_val[0]);
           int moist1 = int(height - (float)int(ser_val[0])*((float)height/1024));//int(height - (float)int(moist_val[0])*((float)height/1024));
           int moist2 = int(height - (float)int(ser_val[1])*((float)height/1024)); //int(height - (float)int(moist_val[1])*((float)height/1024));
@@ -55,7 +57,7 @@ void draw(){
           moist2 = int(ser_val[1])*100 / 886;
           if(moist1 < 60){
             textSize(30);
-            text("MOISTURE 1 LOW",2,20,40);
+            text("MOISTURE 1 LOW",2,20,45);
             textSize(15);
             
             GPIO.digitalWrite(6,GPIO.HIGH);
@@ -66,7 +68,7 @@ void draw(){
           }
           else if(moist2 < 60){
             textSize(30);
-            text("MOISTURE 2 LOW",2,20,40);
+            text("MOISTURE 2 LOW",2,200,45);
             textSize(15);
             
             GPIO.digitalWrite(6,GPIO.HIGH);
@@ -77,15 +79,15 @@ void draw(){
           else{
             fill(255);
             noStroke();
-            rect(0,0,500,50);
+            rect(0,0,500,70);
             fill(255,0,0);
             //GPIO.digitalWrite(6,GPIO.LOW);
           }
           
-          text(moist1  + "%",19,30);
-          text(moist2 + "%",19,40);
-          float avgTemp = temp1 + temp2 /2;
-          text(avgTemp,50,30);
+          text("Humidity 1: " + moist1  + "%",19,40);
+          text("Humidity 2: " + moist2 + "%",19,55);
+          temperature  = (((float)((int(ser_val[2]) + int(ser_val[3])) /2)/1024.000) * 500.000);
+          text("Air temperature:  " + temperature + " degrees",150,40);
           
           //fill(0,0,255);
           //ellipse(t,moist1,3,3);
@@ -96,7 +98,7 @@ void draw(){
           
           }
           //println(inString);
-          println(t + ", " + moist1 + ", " + moist2 + ", " + temp1 + ", " + temp2);   
+          //println(t + ", " + moist1 + ", " + moist2 + ", " + temp1 + ", " + temp2);   
           t += 2;
           oldpoint = newpoint;
         }
