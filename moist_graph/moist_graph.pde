@@ -9,6 +9,9 @@ void setup(){
   printArray(Serial.list());
   Port1 = new Serial(this, Serial.list()[0],9600);
   Port1.clear();
+  
+  GPIO.pinMode(6, GPIO.OUTPUT);
+  
   fill(255,0,0);
   //noStroke();
   background(255);
@@ -49,20 +52,38 @@ void draw(){
           fill(255,0,0);
           stroke(120);
           moist1 = int(ser_val[0])*100 / 886;
+          moist2 = int(ser_val[1])*100 / 886;
           if(moist1 < 60){
             textSize(30);
-            text("MOISTURE LOW",2,00,40);
+            text("MOISTURE 1 LOW",2,20,40);
             textSize(15);
+            
+            GPIO.digitalWrite(6,GPIO.HIGH);
+            delay(150);
+            GPIO.digitalWrite(6,GPIO.LOW);
+            
+            
+          }
+          else if(moist2 < 60){
+            textSize(30);
+            text("MOISTURE 2 LOW",2,20,40);
+            textSize(15);
+            
+            GPIO.digitalWrite(6,GPIO.HIGH);
+            delay(150);
+            GPIO.digitalWrite(6,GPIO.LOW);
+            
           }
           else{
             fill(255);
             noStroke();
             rect(0,0,500,50);
             fill(255,0,0);
+            //GPIO.digitalWrite(6,GPIO.LOW);
           }
           
           text(moist1  + "%",19,30);
-          text(ser_val[0] + "%",19,40);
+          text(moist2 + "%",19,40);
           float avgTemp = temp1 + temp2 /2;
           text(avgTemp,50,30);
           
