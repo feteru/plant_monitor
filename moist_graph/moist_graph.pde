@@ -1,5 +1,5 @@
 import processing.serial.*;
-import processing.io.*;
+import processing.io.*;  //for control of GPIO
 
 Serial Port1;
 PrintWriter output;
@@ -30,7 +30,7 @@ void draw(){
   if(Port1.available() > 0){
     String inString = Port1.readStringUntil('\n');
     if(inString!= null){
-      if (t>= 1024){
+      if (t>= width){
         background(255);
         t = 0;
       } else {
@@ -39,34 +39,33 @@ void draw(){
         if(ser_val.length ==4){
           //println(ser_val[0] + " " + ser_val[1]+ " " + ser_val[2]+ " " + ser_val[3]);
           // int moist1 = int(moist_val[0]);
-          int moist1 = int(height - (float)int(ser_val[0])*((float)height/1024));//int(height - (float)int(moist_val[0])*((float)height/1024));
-          int moist2 = int(height - (float)int(ser_val[1])*((float)height/1024)); //int(height - (float)int(moist_val[1])*((float)height/1024));
-          int temp1 = int(height - (float)int(ser_val[2])*((float)height/1024));
+          int moist1 = int(height - (float)int(ser_val[0])*((float)height/1024));  //convert first moisture value
+          int moist2 = int(height - (float)int(ser_val[1])*((float)height/1024)); 
+          int temp1 = int(height - (float)int(ser_val[2])*((float)height/1024));  //convert temp value for display
           int temp2 = int(height - (float)int(ser_val[3])*((float)height/1024));
-          newpoint[0] = moist1;
+          newpoint[0] = moist1;  //set the new points of the line
           newpoint[1] = moist2;
           newpoint[2] = temp1;
           newpoint[3] = temp2;
-          //moist1 = moist1 / 2;
           fill(255);
           noStroke();
-          rect(0,0,120,50);
+          rect(0,0,120,50);  //create white rectangle to get rid of the previous text on screen
           fill(255,0,0);
           stroke(120);
-          moist1 = int(ser_val[0])*100 / 886;
+          moist1 = int(ser_val[0])*100 / 886;  //moisture scaling for %
           moist2 = int(ser_val[1])*100 / 886;
-          if(moist1 < 60){
+          if(moist1 < 75){  //moisture threshold
             textSize(30);
             text("MOISTURE 1 LOW",2,20,45);
             textSize(15);
             
-            GPIO.digitalWrite(6,GPIO.HIGH);
+            GPIO.digitalWrite(6,GPIO.HIGH);  //open valve
             delay(150);
-            GPIO.digitalWrite(6,GPIO.LOW);
+            GPIO.digitalWrite(6,GPIO.LOW);  //close it again
             
             
           }
-          else if(moist2 < 60){
+          else if(moist2 < 65){
             textSize(30);
             text("MOISTURE 2 LOW",2,200,45);
             textSize(15);
@@ -79,25 +78,21 @@ void draw(){
           else{
             fill(255);
             noStroke();
-            rect(0,0,500,70);
+            rect(0,0,500,70);  //writes over the "Moisture Low" warning
             fill(255,0,0);
-            //GPIO.digitalWrite(6,GPIO.LOW);
           }
           
-          text("Humidity 1: " + moist1  + "%",19,40);
-          text("Humidity 2: " + moist2 + "%",19,55);
-          temperature  = (((float)((int(ser_val[2]) + int(ser_val[3])) /2)/1024.000) * 500.000);
+          text("Moisture 1: " + moist1  + "%",19,40);  //display Moisture sensor output
+          text("Moisture 2: " + moist2 + "%",19,55);
+          temperature  = (((float)((int(ser_val[2]) + int(ser_val[3])) /2)/1024.000) * 500.000);  //average the two temperature sensors and scale them
           text("Air temperature:  " + temperature + " degrees",150,40);
           
-          //fill(0,0,255);
-          //ellipse(t,moist1,3,3);
-          int []colors = {255, 0,0,255,0,0};
+          int []colors = {255, 0,0,255,0,0};  //colors array that allows me to use a for loop to create the four different lines
           for( int i = 0; i <4; i++){
             stroke(colors[i], colors[i+1], colors[i+2]);
             line(t-2,  oldpoint[i], t, newpoint[i]);
           
           }
-          //println(inString);
           //println(t + ", " + moist1 + ", " + moist2 + ", " + temp1 + ", " + temp2);   
           t += 2;
           oldpoint = newpoint;
