@@ -1,6 +1,6 @@
 import serial
 
-ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+ser = serial.Serial('/dev/ttyACM0',9600)
 s = [0]
 
 while True:
