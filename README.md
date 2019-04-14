@@ -13,3 +13,4 @@ In /home/pi there must be:
   * cgi
   * mysql-init 
   
+![Image of home pi folder](/pifile.png "pifile")
