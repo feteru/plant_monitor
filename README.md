@@ -14,3 +14,33 @@ In /home/pi there must be:
   * mysql-init 
   
 ![Image of home pi folder](/pifile.png "pifile")
+
+## Required files in plant_monitor (aka no required location):
+ * Moisture_Read.ino
+  This needs to be flashed to arduino to report data.
+ * moist_graph.pde
+  Processing script that draws graphs and reports temperature & moisture
+ * moist_graph.js
+  Seemingly a deprecated version of the processing script.
+ * index.html
+  index file that calls "moist_graph.js" script to be body of the webpage. Probably needs to be in same directory as the mosit_graph.js, or at least routed there.
+  ### Python Files
+  * cam_serial.py
+   Scales moisture readings down by 900 units, averates two temperature readings.
+   Writes a json string in '/var/www/html/plant_data.txt' of the labeled data of both moisture readings and average temp.
+   Finally, captures camera image into '/var/www/html/image.jpg' then sleeps for 5.
+  ### CGI files
+  * cam_serial_page.cgi
+   This is where the magic happens. Uses the camera & serial inputs. This script defines the html document that is the output web page.
+   For it to be dynamic, the script itself retrieves values from the serial stream and displays them. Also captures an image and then uses the print command with html script to display that image. One final print command declares the end of the web page.
+  
+ ## Nonrequired files that are here anyways:
+  ### Python test files
+  * cam_test.py
+   Just captures an image to the same directory called 'image.jpg'
+  * gpio_test.py
+   Assigns a value of 4 to 'valvePin' for the pin a valve is attached to, then turns it to 1 for 0.5 seconds.
+  * serial_test.py
+   assigns the serial object to the device at '/dev/ttcyACM0' then reads, splits and prints the serial stream.
+  
+ 
