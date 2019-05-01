@@ -35,6 +35,11 @@ In /home/pi there must be:
    For it to be dynamic, the script itself retrieves values from the serial stream and displays them. Also captures an image and then uses the print command with html script to display that image. One final print command declares the end of the web page.
   
  ## Nonrequired files that are here anyways:
+  ### Arduino Test Files
+  * Minimal_moisture_read.ino
+   Just reads the soil moisture sensor value from analog pin A0, powered by digital Pin 2.
+   Returns a value over serial from 0.00-100.00 @9600 baud.
+ 
   ### Python test files
   * cam_test.py
    Just captures an image to the same directory called 'image.jpg'
