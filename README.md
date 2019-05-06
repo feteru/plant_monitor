@@ -1,6 +1,16 @@
 # plant_monitor
-A system for monitoring plant health and auto-watering, as well as web components.
+A system for monitoring plant health and acting on it. Currently facilitated through a Raspberry Pi w/ an Arduino (for the ADC), soil moisture sensors, humidity & temperature sensors. The web interface is a basic Apache HTML site, this will change.
 
+
+
+# Using Plant Monitor
+1. Download the files and place htem as described below.
+2. Flash your arduino with the supplied Moisture_read.ino script.
+3. Ensure that serial communication is on.
+4. Do a bunch of server magic I honestly don't know.
+5. Run the python script that takes the serial values and actually puts them on the web.
+6. None of this works yet.
+ 7. Well apart from the sensors reading and the files CAN be downloaded.
 
 
 
@@ -35,6 +45,11 @@ In /home/pi there must be:
    For it to be dynamic, the script itself retrieves values from the serial stream and displays them. Also captures an image and then uses the print command with html script to display that image. One final print command declares the end of the web page.
   
  ## Nonrequired files that are here anyways:
+  ### Arduino Test Files
+  * Minimal_moisture_read.ino
+   Just reads the soil moisture sensor value from analog pin A0, powered by digital Pin 2.
+   Returns a value over serial from 0.00-100.00 @9600 baud.
+ 
   ### Python test files
   * cam_test.py
    Just captures an image to the same directory called 'image.jpg'
