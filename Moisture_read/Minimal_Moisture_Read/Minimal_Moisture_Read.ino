@@ -16,7 +16,7 @@ void loop() {
   moistValue = analogRead(moistPin);
   delayMicroseconds(200);
   digitalWrite(moistPower, LOW);
-  float moistPercentage = moistValue / 890.0 * 100;
-  Serial.println(moistPercentage);
+  Serial.println(moistValue);
+  delay(5);
 
 }
